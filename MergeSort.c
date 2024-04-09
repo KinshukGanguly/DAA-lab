@@ -1,39 +1,98 @@
-#include<stdlib.h>
+#include<stdio.h>
+int count=0;
+int main()
 
-void merge(int a[],int low,int high,int mid)//high an dlow are the indices
+{   	
+	int i, n;
+	printf("enter the number of elements \n");
+	scanf("%d",&n);
+	
+	int a[n];
+	printf("enter elements.....\n");
+	for(i=0;i<n;i++)
+	{
+		scanf("%d",&a[i]);
+		
+	}
+	printf("Entered array- \n");
+	for(i=0;i<n;i++)
+	{
+		printf("%d\t",a[i]);
+		
+	}
+	printf("\nInversion Pairs \n");
+	int c=MergeSort(a,0,n-1);
+	printf("\nNumber of Inversion pairs-%d \n",count);
+	printf("Sorted array- \n");
+	for(i=0;i<n;i++)
+	{
+		printf("%d\t",a[i]);
+		
+	}
+	
+}//main()
+
+void MergeSort(int *a, int start, int end)
 {
+	
+	if(start<end)
+	{
+		int mid=(start+end)/2;
+		MergeSort(a,start,mid);
+		MergeSort(a,mid+1,end);
+		
+		Merge(a,start,end);
+	}			
+	
+}
 
-int i=low;
-int j=mid+1;
+void Merge(int *a,int start, int end)
+{   
+	int startc=start;
+	
+	int mid=(start+end)/2;
+	int l1=mid-start+1;
+	int l2=end-mid;
+	int a1[l1];
+	int a2[l2];
+	int i,j,k,midc=mid+1;
+	//copying to first array
+	for(i=0;i<l1;i++)
+	{a1[i]=a[startc++];//index 0 to midpoint
+	}
+	//copying to second array
+	for(i=0;i<l2;i++)
+	{a2[i]=a[midc++];//index midpoint+1 to end
+	}
+	
+	i=0;
+	j=0;
+	k=start;
+	while(i<l1&&j<l2)
+	{
+		if(a1[i]<a2[j])
+		 {a[k++]=a1[i++];
+		 }
+		else if(a1[i]>a2[j])//inversion pairs will exist
+		{
+		int m;
+		for( m=i;m<l1;m++)
+		 {
+		  printf("(%d , %d)\n",a1[m],a2[j]);
+		  count++; 
+        }
+		 a[k++]=a2[j++];
+		}
+		
+		else
+		{a[k++]=a1[i++];
+		  j++;
+		}
+	 }
+	while(i<l1)
+	   a[k++]=a1[i++];
+	while(j<l2)
+	   a[k++]=a2[j++];
+	return count;
+}//Merge
 
-//mid, high+1 are the two indices where the two subraays end
-int c[high-low+1];
-while(i<=mid&&j<=high)
-{
-  if(a[i]>a[j])
- {
-   printf("%d %d \n",a[i],a[j])
-   c[k++]=a[j++]; 
- }
- 
- else if(a[i]<a[j])
- { c[k++]=a[i++];
-  }
-  
- else
- {c[k++]=a[i++];
-  c[k++]=a[j++];
- }
- 
-}//while
-
-while(i<=mid)
-{c[k++]=a[i++];}
-
-while(j<=mid)
-{c[k++]=a[j++]; 
- }
- 
- }
-
-}//merge
